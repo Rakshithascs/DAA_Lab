@@ -1,0 +1,169 @@
+#include <iostream.h>
+#include <conio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int data;
+    node *left, *right;
+};
+
+node *root = NULL;
+
+node* insert(node *root, int item)
+{
+    if (root == NULL)
+    {
+        root = new node;
+        root->data = item;
+        root->left = root->right = NULL;
+        return root;
+    }
+    if (item < root->data)
+        root->left = insert(root->left, item);
+    else
+        root->right = insert(root->right, item);
+
+    return root;
+}
+
+node* findMin(node *root)
+{
+    while (root->left != NULL)
+        root = root->left;
+    return root;
+}
+
+node* deleteNode(node *root, int item)
+{
+    if (root == NULL)
+        return root;
+
+    if (item < root->data)
+        root->left = deleteNode(root->left, item);
+    else if (item > root->data)
+        root->right = deleteNode(root->right, item);
+    else
+    {
+        if (root->left == NULL)
+        {
+            node *temp = root->right;
+            delete root;
+            return temp;
+        }
+        else if (root->right == NULL)
+        {
+            node *temp = root->left;
+            delete root;
+            return temp;
+        }
+
+        node *temp = findMin(root->right);
+        root->data = temp->data;
+        root->right = deleteNode(root->right, temp->data);
+    }
+    return root;
+}
+
+void inorder(node *root)
+{
+    if (root != NULL)
+    {
+        inorder(root->left);
+        cout << root->data << "->";
+        inorder(root->right);
+    }
+}
+
+void preorder(node *root)
+{
+    if (root != NULL)
+    {
+        cout << root->data << "->";
+        preorder(root->left);
+        preorder(root->right);
+    }
+}
+
+void postorder(node *root)
+{
+    if (root != NULL)
+    {
+        postorder(root->left);
+        postorder(root->right);
+        cout << root->data << "->";
+    }
+}
+
+void search(node *root, int key)
+{
+    if (root == NULL)
+    {
+        cout << "Key item not found\n";
+        return;
+    }
+    if (root->data == key)
+    {
+        cout << "Key item found in the tree\n";
+        return;
+    }
+    if (key < root->data)
+        search(root->left, key);
+    else
+        search(root->right, key);
+}
+
+void main()
+{
+    int ch, item;
+    clrscr();
+
+    while (1)
+    {
+        cout << "\n1.Insert  2.Delete\n";
+        cout << "3.Inorder 4.Preorder\n";
+        cout << "5.Postorder 6.Search\n";
+        cout << "7.Exit\n";
+        cout << "Enter ur choice:";
+        cin >> ch;
+
+        switch (ch)
+        {
+        case 1:
+            cout << "Enter element to insert:";
+            cin >> item;
+            root = insert(root, item);
+            break;
+
+        case 2:
+            cout << "Enter item to be deleted:";
+            cin >> item;
+            root = deleteNode(root, item);
+            break;
+
+        case 3:
+            cout << "Inorder Traversals is:";
+            inorder(root);
+            break;
+
+        case 4:
+            cout << "Preorder Traversals is:";
+            preorder(root);
+            break;
+
+        case 5:
+            cout << "Postorder Traversals is:";
+            postorder(root);
+            break;
+
+        case 6:
+            cout << "Enter element to be searched:";
+            cin >> item;
+            search(root, item);
+            break;
+
+        case 7:
+            exit(0);
+        }
+    }
+}
