@@ -1,0 +1,76 @@
+#include <iostream.h>
+#include <conio.h>
+#include <time.h>
+
+int partition(int a[], int low, int high)
+{
+    int pivot = a[low];
+    int i = low + 1;
+    int j = high;
+    int temp;
+
+    while (i <= j)
+    {
+        while (a[i] <= pivot && i <= high)
+            i++;
+        while (a[j] > pivot)
+            j--;
+
+        if (i < j)
+        {
+            temp = a[i];
+            a[i] = a[j];
+            a[j] = temp;
+        }
+    }
+
+    temp = a[low];
+    a[low] = a[j];
+    a[j] = temp;
+
+    return j;
+}
+
+void quickSort(int a[], int low, int high)
+{
+    int p;
+    if (low < high)
+    {
+        p = partition(a, low, high);
+        quickSort(a, low, p - 1);
+        quickSort(a, p + 1, high);
+    }
+}
+
+void main()
+{
+    int a[50], n, i;
+    clock_t start, end;
+
+    clrscr();
+
+    cout << "Enter the number of elements\n";
+    cin >> n;
+
+    cout << "Enter the elements\n";
+    for (i = 0; i < n; i++)
+        cin >> a[i];
+
+    start = clock();
+    quickSort(a, 0, n - 1);
+    end = clock();
+
+    cout << "Sorted elements are\n";
+    for (i = 0; i < n; i++)
+        cout << a[i] << endl;
+
+    cout << "Time Taken: "
+         << (end - start) / CLK_TCK
+         << " seconds\n";
+
+    cout << "Space consumed: "
+         << sizeof(a)
+         << " bytes\n";
+
+    getch();
+}
