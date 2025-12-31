@@ -1,0 +1,57 @@
+#include <iostream.h>
+#include <conio.h>
+
+int a[10][10], visited[10], n;
+
+void bfs(int v)
+{
+    int q[10], front = 0, rear = 0;
+    int i;
+
+    visited[v] = 1;
+    q[rear++] = v;
+
+    while (front < rear)
+    {
+        v = q[front++];
+        cout << v << " ";
+
+        for (i = 1; i <= n; i++)
+        {
+            if (a[v][i] == 1 && visited[i] == 0)
+            {
+                visited[i] = 1;
+                q[rear++] = i;
+            }
+        }
+    }
+}
+
+void main()
+{
+    int i, j, v;
+    clrscr();
+
+    cout << "Enter the number of vertices\n";
+    cin >> n;
+
+    cout << "Enter the adjacency matrix\n";
+    for (i = 1; i <= n; i++)
+    {
+        for (j = 1; j <= n; j++)
+        {
+            cin >> a[i][j];
+        }
+    }
+
+    for (i = 1; i <= n; i++)
+        visited[i] = 0;
+
+    cout << "Enter the starting vertex\n";
+    cin >> v;
+
+    cout << "The nodes reachable from vertex " << v << " are:\n";
+    bfs(v);
+
+    getch();
+}
