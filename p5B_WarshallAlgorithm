@@ -1,0 +1,31 @@
+#include <iostream.h>
+#include <conio.h>
+
+void main()
+{
+    int a[10][10], n, i, j, k;
+    clrscr();
+
+    cout << "Enter number of vertices\n";
+    cin >> n;
+
+    cout << "Enter adjacency matrix\n";
+    for (i = 1; i <= n; i++)
+        for (j = 1; j <= n; j++)
+            cin >> a[i][j];
+
+    for (k = 1; k <= n; k++)
+        for (i = 1; i <= n; i++)
+            for (j = 1; j <= n; j++)
+                a[i][j] = a[i][j] || (a[i][k] && a[k][j]);
+
+    cout << "Transitive Closure is:\n";
+    for (i = 1; i <= n; i++)
+    {
+        for (j = 1; j <= n; j++)
+            cout << a[i][j] << " ";
+        cout << "\n";
+    }
+
+    getch();
+}
